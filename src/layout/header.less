@@ -1,0 +1,35 @@
+@import "~@/static/css/variables";
+
+.header {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  right: 0;
+  transition-duration: 0.2s;
+  justify-content: space-between;
+  padding: 0 20px 0 0;
+  background: #fff;
+  border-bottom: 1px solid #f2f2f2;
+  .name{
+    margin-left: 15px;
+  }
+
+  .trigger {
+    height: @layout-header-height;
+    padding: ~'calc((@{layout-header-height} - 20px) / 2)' 24px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s, padding 0s;
+    &:hover {
+      background: @pro-header-hover-bg;
+    }
+  }
+  .notice {
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    right: 148px;
+    top: 3px;
+  }
+}
+

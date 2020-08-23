@@ -1,0 +1,110 @@
+.loginBackdropBg {
+  width: 100%;
+  height: 100%;
+  background: url('./operator-bg.png') no-repeat center;
+  background-size: 100% 100%;
+}
+
+.login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 430px;
+  height: 440px;
+}
+
+.loginTitle {
+  margin-bottom: 40px;
+  position: relative;
+
+  .logo_box {
+    position: absolute;
+    width: 50px;
+    left: 70px;
+    top: 6px;
+    cursor:pointer;
+    img {
+      width: 50px;
+    }
+  }
+
+  h4 {
+    text-align: center;
+    letter-spacing: 2px;
+    color: #fff;
+    font-size: 36px;
+    line-height: 50px;
+  }
+}
+
+.loginBox {
+  padding: 40px 40px 20px 40px;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.17);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 35px;
+}
+
+.loginFoot {
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+}
+
+.loginInputWrap {
+  position: relative;
+
+  img {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    width: 22px;
+    margin-top: -11px;
+  }
+
+  input {
+    padding: 8px 10px 8px 50px;
+    height: 38px;
+    color: #000;
+  }
+}
+
+.formTipWrap {
+  margin: -2px 0 8px;
+  overflow: hidden;
+}
+
+.btn {
+  padding: 8px 0;
+  height: 38px;
+  width: 100%;
+  border: 0;
+  font-size: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &,
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: #5e96da;
+  }
+}
+
+.toRegist {
+  padding: 0;
+  margin: 0;
+}
+
+.fix_explain {
+  :global {
+    .ant-form-explain {
+      position: absolute;
+      font-size: 12px;
+    }
+  }
+}
+
