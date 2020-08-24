@@ -40,6 +40,19 @@ class SearchFilter extends PureComponent {
               <Form.Item wrapperCol={{ offset: label }} className={styles.btnItem}>
                 <Button type="primary" icon="search" onClick={handleSearch}>查询</Button>
                 <Button icon="reload" onClick={handleReset}>重置</Button>
+                {this.props.moreBtn}
+                {/*<Button*/}
+                {/*  type="primary"*/}
+                {/*  style={{ marginBottom: 10 }}*/}
+                {/*  onClick={() => router.push('/school-library/add')}*/}
+                {/*>新增员工*/}
+                {/*</Button>*/}
+                {/*<Button*/}
+                {/*  type="primary"*/}
+                {/*  style={{ marginBottom: 10 }}*/}
+                {/*  // onClick={() => router.push('/school-library/add')}*/}
+                {/*>重置密码*/}
+                {/*</Button>*/}
               </Form.Item>
             </Col>
           </Row>

@@ -1,7 +1,7 @@
 import Https from '@/utils/https'
 
 // 查询企业填报
-const getListData = params => Https.post('地址', params)
+const getDepDataReq = params => Https.get('/api/admin/department/tree', params)
 
 // 新增
 const getAdd = params => Https.post('地址', params)
@@ -13,5 +13,5 @@ const getEdit = params => Https.post('地址', params)
 const getDetail = params => Https.post('地址', params)
 
 export {
-  getListData, getAdd, getEdit, getDetail,
+  getDepDataReq, getAdd, getEdit, getDetail,
 }

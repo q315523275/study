@@ -1,167 +1,92 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import {
-  Card, Table, Form, Input, Select, Button,
+  Card, Tree, Menu, Icon, Alert,
 } from 'antd'
 import { connect } from 'dva'
-import router from 'umi/router'
-import moment from 'moment'
-import SearchFilter from '@/components/SearchFilter'
+import Employee from './page-component/employee/employee'
 import style from './style.less'
 
-const { Option } = Select
-@Form.create()
-@connect(({ schoolLibrary, loading }) => ({ ...schoolLibrary, loading: loading.effects['schoolLibrary/getListData'] }))
-class Example extends Component {
-  columns = [
-    {
-      title: '学科',
-      dataIndex: 'name3',
-      key: 'name3',
-      ellipsis: true,
-    },
-    {
-      title: '学制',
-      dataIndex: 'name4',
-      key: 'name4',
-      ellipsis: true,
-    },
-    {
-      title: '专业中文名称',
-      dataIndex: 'name1',
-      key: 'name1',
-      ellipsis: true,
-    },
-    {
-      title: '专业英文名称',
-      dataIndex: 'name2',
-      key: 'name2',
-      ellipsis: true,
-    },
-    {
-      title: 'USNEWS排名',
-      dataIndex: 'name5',
-      key: 'name5',
-      ellipsis: true,
-    },
-    {
-      title: 'QS排名',
-      dataIndex: 'name6',
-      key: 'name6',
-      ellipsis: true,
-    },
-    {
-      title: '泰晤士排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '上海交大排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '是否热门专业',
-      dataIndex: 'name8',
-      key: 'name8',
-      ellipsis: true,
-    },
-    {
-      title: '备注',
-      dataIndex: 'name9',
-      key: 'name9',
-      ellipsis: true,
-    },
-    {
-      title: '操作',
-      dataIndex: 'id',
-      key: 'id',
-      render: id => (
-        <Fragment>
-          <Button type="link" onClick={() => router.push(`/school-library/edit/${id}`)}>编辑</Button>
-          <Button style={{ marginRight: 10 }} type="link">删除</Button>
-        </Fragment>
-      ),
-    },
-  ]
+const { TreeNode } = Tree
 
+@connect(({ institutional }) => ({ ...institutional }))
+class SchoolDomain extends Component {
   componentDidMount() {
-    // this.getInitialData({})
+    console.log(this.props)
+    this.getTreeData()
   }
 
-  getInitialData=({ pageNum = 1, pageSize = 10 }) => {
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'schoolDomain/clearAll' })
+  }
+
+  // 获取树节点
+  getTreeData=() => {
     this.props.dispatch({
-      type: 'report/getListData',
-      params: {
-        pageNum,
-        pageSize,
-      },
+      type: 'institutional/getListData',
+      params: {},
     })
   }
 
-  // 表格change事件
-  tableChange = ({ current, pageSize }) => {
-    // this.getInitialData({ pageNum: current, pageSize })
+  onSelect = (selectedKeys, { selected }) => {
+    if (selected) {
+      const universityId = parseInt(selectedKeys[0], 10)
+      this.props.dispatch({ type: 'schoolDomain/getUniversitySubjectList', params: { pageNum: 1, pageSize: 10, universityId } })
+      this.props.dispatch({ type: 'schoolDomain/save', payload: { universityId } })
+    }
   }
 
-  // 搜索
-  handleSearch=() => {
-    const { form: { validateFields } } = this.props
-    validateFields((errors, values) => {
-      if (!errors) {
-        const submitData = {}
-        Object.keys(values).forEach((key) => {
-          if (values[key] !== undefined && values[key] !== '') { // 无该条件就不传该字段
-            submitData[key] = values[key]
-          }
-        })
-        // this.getInitialData({ query: submitData })
-      }
-    })
-  }
+   // 获取表单ref
+   handleSaveOperateTreeNodeRef = (formRef) => {
+     this.operateTreeNodeRef = formRef
+   }
 
-  // 重置
-  handleReset=() => {
-    this.props.form.resetFields()
-    // this.getInitialData({})
-  }
+  // 渲染树结构
+  renderTreeNodes = data => data.map(item => (
+    <TreeNode
+      key={item.countryId}
+      title={item.countryName}
+      value={item.countryId}
+      dataRef={item}
+      selectable={false}
+    >
+      {
+          item.items.map(cItem => (
+            <TreeNode
+              key={cItem.id}
+              title={cItem.name}
+              value={cItem.id}
+              dataRef={cItem}
+            />
+          ))
+        }
+    </TreeNode>
+  ))
 
   render() {
-    const {
-      loading, listData, pagination, form: { getFieldDecorator },
-    } = this.props
+    const { treeData } = this.props
     return (
-      <Card title="例子" bordered={false} className={style.schoolLibrary}>
-        <SearchFilter handleSearch={this.handleSearch} handleReset={this.handleReset} span={8}>
-          <Form.Item label="国家/地区">
-            {getFieldDecorator('name3')(
-              <Input maxLength={30} placeholder="请输入" />,
-            )}
-          </Form.Item>
-          <Form.Item label="院校中文名">
-            {getFieldDecorator('name1')(
-              <Input maxLength={30} placeholder="请输入" />,
-            )}
-          </Form.Item>
-          <Form.Item label="院校英文名">
-            {getFieldDecorator('name2')(
-              <Input maxLength={30} placeholder="请输入" />,
-            )}
-          </Form.Item>
-        </SearchFilter>
-        <Button type="primary" style={{ marginBottom: 10 }} onClick={() => router.push('/school-library/add')}>新增</Button>
-        <Table
-          rowKey="id"
-          dataSource={listData}
-          // loading={loading}
-          pagination={pagination}
-          columns={this.columns}
-          onChange={this.tableChange}
-        />
+      <Card title="组织机构" bordered={false}>
+        <div style={{ display: 'flex' }}>
+          {/* 展示组院校专业库分类 */}
+          <div onClick={this.clearMenu} className={style.treeNodeArea}>
+            {/* 树结构 */}
+            <div className={style.tree}>
+              <Tree
+                defaultExpandAll
+                onSelect={this.onSelect}
+              >
+                {
+                  // treeData.length > 0 ? this.renderTreeNodes(treeData) : <TreeNode key="0" title="企业" />
+                }
+              </Tree>
+            </div>
+          </div>
+          {/* 展示员工表格 */}
+          <Employee />
+        </div>
       </Card>
     )
   }
 }
 
-export default Example
+export default SchoolDomain

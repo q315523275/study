@@ -10,67 +10,16 @@ import style from './style.less'
 
 const { Option } = Select
 @Form.create()
-@connect(({ schoolLibrary, loading }) => ({ ...schoolLibrary, loading: loading.effects['schoolLibrary/getListData'] }))
+@connect(({ employeesAccount, loading }) => ({
+  ...employeesAccount,
+  loading: loading.effects['employeesAccount/getListData'],
+}))
 class Example extends Component {
   columns = [
     {
-      title: '学科',
-      dataIndex: 'name3',
-      key: 'name3',
-      ellipsis: true,
-    },
-    {
-      title: '学制',
-      dataIndex: 'name4',
-      key: 'name4',
-      ellipsis: true,
-    },
-    {
-      title: '专业中文名称',
-      dataIndex: 'name1',
-      key: 'name1',
-      ellipsis: true,
-    },
-    {
-      title: '专业英文名称',
-      dataIndex: 'name2',
-      key: 'name2',
-      ellipsis: true,
-    },
-    {
-      title: 'USNEWS排名',
-      dataIndex: 'name5',
-      key: 'name5',
-      ellipsis: true,
-    },
-    {
-      title: 'QS排名',
-      dataIndex: 'name6',
-      key: 'name6',
-      ellipsis: true,
-    },
-    {
-      title: '泰晤士排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '上海交大排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '是否热门专业',
-      dataIndex: 'name8',
-      key: 'name8',
-      ellipsis: true,
-    },
-    {
-      title: '备注',
-      dataIndex: 'name9',
-      key: 'name9',
+      title: '序号',
+      dataIndex: 'id',
+      key: 'id',
       ellipsis: true,
     },
     {
@@ -84,15 +33,59 @@ class Example extends Component {
         </Fragment>
       ),
     },
+    {
+      title: '员工账户',
+      dataIndex: 'userName',
+      key: 'userName',
+      ellipsis: true,
+    },
+    {
+      title: '员工姓名',
+      dataIndex: 'nickName',
+      key: 'nickName',
+      ellipsis: true,
+    },
+    {
+      title: '性别',
+      dataIndex: 'sexId',
+      key: 'sexId',
+      ellipsis: true,
+      render: sexId => (sexId === 100012 ? '男' : '女'),
+    },
+    {
+      title: '所属部门',
+      dataIndex: 'department',
+      key: 'department',
+      ellipsis: true,
+    },
+    {
+      title: '职位',
+      dataIndex: 'position',
+      key: 'position',
+      ellipsis: true,
+    },
+    {
+      title: '手机',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+      ellipsis: true,
+    },
+    {
+      title: '用户状态',
+      dataIndex: 'locked',
+      key: 'locked',
+      ellipsis: true,
+      render: locked => (locked ? '锁定' : '激活'),
+    },
   ]
 
   componentDidMount() {
-    // this.getInitialData({})
+    this.getInitialData({})
   }
 
   getInitialData=({ pageNum = 1, pageSize = 10 }) => {
     this.props.dispatch({
-      type: 'report/getListData',
+      type: 'employeesAccount/getListData',
       params: {
         pageNum,
         pageSize,
@@ -131,26 +124,26 @@ class Example extends Component {
     const {
       loading, listData, pagination, form: { getFieldDecorator },
     } = this.props
+    console.log(listData)
     return (
-      <Card title="例子" bordered={false} className={style.schoolLibrary}>
+      <Card title="员工账号管理" bordered={false} className={style.schoolLibrary}>
         <SearchFilter handleSearch={this.handleSearch} handleReset={this.handleReset} span={8}>
-          <Form.Item label="国家/地区">
+          <Form.Item label="员工账号">
             {getFieldDecorator('name3')(
               <Input maxLength={30} placeholder="请输入" />,
             )}
           </Form.Item>
-          <Form.Item label="院校中文名">
+          <Form.Item label="员工姓名">
             {getFieldDecorator('name1')(
               <Input maxLength={30} placeholder="请输入" />,
             )}
           </Form.Item>
-          <Form.Item label="院校英文名">
+          <Form.Item label="部门名称">
             {getFieldDecorator('name2')(
               <Input maxLength={30} placeholder="请输入" />,
             )}
           </Form.Item>
         </SearchFilter>
-        <Button type="primary" style={{ marginBottom: 10 }} onClick={() => router.push('/school-library/add')}>新增</Button>
         <Table
           rowKey="id"
           dataSource={listData}

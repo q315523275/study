@@ -1,7 +1,7 @@
 import Https from '@/utils/https'
 
 // 查询企业填报
-const getListData = params => Https.post('地址', params)
+const getListData = params => Https.get('/api/admin/userManage/adminUser', params)
 
 // 新增
 const getAdd = params => Https.post('地址', params)

@@ -10,62 +10,21 @@ import style from './style.less'
 
 const { Option } = Select
 @Form.create()
-@connect(({ schoolLibrary, loading }) => ({ ...schoolLibrary, loading: loading.effects['schoolLibrary/getListData'] }))
+@connect(({ dictionaries, loading }) => ({
+  ...dictionaries,
+  loading: loading.effects['dictionaries/getListData'],
+}))
 class Example extends Component {
   columns = [
     {
-      title: '学科',
-      dataIndex: 'name3',
-      key: 'name3',
-      ellipsis: true,
+      title: '代码',
+      dataIndex: 'code',
+      key: 'code',
     },
     {
-      title: '学制',
-      dataIndex: 'name4',
-      key: 'name4',
-      ellipsis: true,
-    },
-    {
-      title: '专业中文名称',
-      dataIndex: 'name1',
-      key: 'name1',
-      ellipsis: true,
-    },
-    {
-      title: '专业英文名称',
-      dataIndex: 'name2',
-      key: 'name2',
-      ellipsis: true,
-    },
-    {
-      title: 'USNEWS排名',
-      dataIndex: 'name5',
-      key: 'name5',
-      ellipsis: true,
-    },
-    {
-      title: 'QS排名',
-      dataIndex: 'name6',
-      key: 'name6',
-      ellipsis: true,
-    },
-    {
-      title: '泰晤士排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '上海交大排名',
-      dataIndex: 'name7',
-      key: 'name7',
-      ellipsis: true,
-    },
-    {
-      title: '是否热门专业',
-      dataIndex: 'name8',
-      key: 'name8',
-      ellipsis: true,
+      title: '名称',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '备注',
@@ -87,15 +46,16 @@ class Example extends Component {
   ]
 
   componentDidMount() {
-    // this.getInitialData({})
+    this.getInitialData({})
   }
 
-  getInitialData=({ pageNum = 1, pageSize = 10 }) => {
+  getInitialData=({ pageNum = 1, pageSize = 10, query = '' }) => {
     this.props.dispatch({
-      type: 'report/getListData',
+      type: 'dictionaries/getListData',
       params: {
         pageNum,
         pageSize,
+        query,
       },
     })
   }
@@ -116,7 +76,7 @@ class Example extends Component {
             submitData[key] = values[key]
           }
         })
-        // this.getInitialData({ query: submitData })
+        this.getInitialData({ ...submitData })
       }
     })
   }
@@ -124,7 +84,7 @@ class Example extends Component {
   // 重置
   handleReset=() => {
     this.props.form.resetFields()
-    // this.getInitialData({})
+    this.getInitialData({})
   }
 
   render() {
@@ -132,29 +92,24 @@ class Example extends Component {
       loading, listData, pagination, form: { getFieldDecorator },
     } = this.props
     return (
-      <Card title="例子" bordered={false} className={style.schoolLibrary}>
+      <Card title="数据字典" bordered={false} className={style.schoolLibrary}>
         <SearchFilter handleSearch={this.handleSearch} handleReset={this.handleReset} span={8}>
           <Form.Item label="国家/地区">
-            {getFieldDecorator('name3')(
-              <Input maxLength={30} placeholder="请输入" />,
-            )}
-          </Form.Item>
-          <Form.Item label="院校中文名">
-            {getFieldDecorator('name1')(
-              <Input maxLength={30} placeholder="请输入" />,
-            )}
-          </Form.Item>
-          <Form.Item label="院校英文名">
-            {getFieldDecorator('name2')(
-              <Input maxLength={30} placeholder="请输入" />,
+            {getFieldDecorator('query')(
+              <Input placeholder="请输入" />,
             )}
           </Form.Item>
         </SearchFilter>
-        <Button type="primary" style={{ marginBottom: 10 }} onClick={() => router.push('/system-manage/dictionaries/add')}>新增</Button>
+        <Button
+          type="primary"
+          style={{ marginBottom: 10 }}
+          onClick={() => router.push('/system-manage/dictionaries/add')}
+        >新增
+        </Button>
         <Table
           rowKey="id"
           dataSource={listData}
-          // loading={loading}
+          loading={loading}
           pagination={pagination}
           columns={this.columns}
           onChange={this.tableChange}
