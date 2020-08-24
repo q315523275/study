@@ -10,7 +10,7 @@
 # production
 /dist
 /prod
-/qst-inside
+/html
 
 # misc
 .DS_Store
