@@ -1,1 +1,0 @@
-{"version":3,"file":"p__login__model.js.4dae74d3.async.js","sources":["src/pages/login/api.js"],"sourcesContent":["import Https from '@/utils/https'\n\nconst queryLogin = params => Https.post('/api/admin/user/login', params, true)\n\nexport { queryLogin }\n"],"mappings":"AAEA","sourceRoot":""}

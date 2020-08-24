@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import {
-  Card, Table, Form, Input, Select, Button, message,
+  Card, Table, Form, Input, Select, Button, message, DatePicker,
 } from 'antd'
+import moment from 'moment'
 import { connect } from 'dva'
 import SearchFilter from '@/components/SearchFilter'
 import style from './style.less'
 
-const { Option } = Select
+
+const { RangePicker } = DatePicker
 @Form.create()
 @connect(({ log, loading }) => ({
   ...log,
@@ -58,7 +60,7 @@ class Example extends Component {
   }
 
   getInitialData=({
-    pageNum = 1, pageSize = 10, query, type = '',
+    pageNum = 1, pageSize = 10, query = '', type = '',
   }) => {
     this.props.dispatch({
       type: 'log/getListData',
@@ -80,6 +82,7 @@ class Example extends Component {
   handleSearch=() => {
     const { form: { validateFields } } = this.props
     validateFields((errors, values) => {
+      console.log(values)
       if (!errors) {
         const submitData = {}
         Object.keys(values).forEach((key) => {
@@ -150,8 +153,13 @@ class Example extends Component {
             )}
           </Form.Item>
           <Form.Item label="时间">
-            {getFieldDecorator('name2')(
-              <Input maxLength={30} placeholder="请输入" />,
+            {getFieldDecorator('time')(
+              <RangePicker
+                onChange={
+                e => console.log(moment(e[0]).valueOf())
+              }
+              />,
+              // <Input maxLength={30} placeholder="请输入" />,
             )}
           </Form.Item>
         </SearchFilter>
