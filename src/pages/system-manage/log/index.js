@@ -47,12 +47,12 @@ class Example extends Component {
       dataIndex: 'createTime',
       key: 'createTime',
     },
-    // {
-    //   title: '访问IP',
-    //   dataIndex: 'name7',
-    //   key: 'name7',
-    //   ellipsis: true,
-    // },
+    {
+      title: '访问IP',
+      dataIndex: 'ip',
+      key: 'ip',
+      ellipsis: true,
+    },
   ]
 
   componentDidMount() {
@@ -60,7 +60,7 @@ class Example extends Component {
   }
 
   getInitialData=({
-    pageNum = 1, pageSize = 10, query = '', type = '',
+    pageNum = 1, pageSize = 10, query = '', type = '', start = '', end = '',
   }) => {
     this.props.dispatch({
       type: 'log/getListData',
@@ -69,6 +69,8 @@ class Example extends Component {
         pageSize,
         type,
         query,
+        start,
+        end
       },
     })
   }
@@ -82,14 +84,19 @@ class Example extends Component {
   handleSearch=() => {
     const { form: { validateFields } } = this.props
     validateFields((errors, values) => {
-      console.log(values)
       if (!errors) {
         const submitData = {}
         Object.keys(values).forEach((key) => {
           if (values[key] !== undefined && values[key] !== '') { // 无该条件就不传该字段
+            if (values.time.length > 0) {
+              submitData.start = moment(values.time[0]).valueOf()
+              submitData.end = moment(values.time[1]).valueOf()
+            }
             submitData[key] = values[key]
           }
         })
+        console.log(submitData)
+
         this.getInitialData({ ...submitData })
       }
     })

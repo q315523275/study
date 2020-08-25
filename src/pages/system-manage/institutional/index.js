@@ -43,14 +43,14 @@ class SchoolDomain extends Component {
   // 渲染树结构
   renderTreeNodes = data => data.map(item => (
     <TreeNode
-      key={item.countryId}
-      title={item.countryName}
-      value={item.countryId}
+      key={item.id}
+      title={item.name}
+      value={item.id}
       dataRef={item}
       selectable={false}
     >
       {
-          item.items.map(cItem => (
+          item.children.map(cItem => (
             <TreeNode
               key={cItem.id}
               title={cItem.name}
@@ -64,6 +64,7 @@ class SchoolDomain extends Component {
 
   render() {
     const { treeData } = this.props
+    console.log(treeData)
     return (
       <Card title="组织机构" bordered={false}>
         <div style={{ display: 'flex' }}>
@@ -76,7 +77,7 @@ class SchoolDomain extends Component {
                 onSelect={this.onSelect}
               >
                 {
-                  // treeData.length > 0 ? this.renderTreeNodes(treeData) : <TreeNode key="0" title="企业" />
+                  treeData.length > 0 ? this.renderTreeNodes(treeData) : <TreeNode key="0" title="企业" />
                 }
               </Tree>
             </div>

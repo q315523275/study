@@ -172,6 +172,7 @@ class InformationPublishEdit extends Component {
           </Form.Item>
           <Form.Item label="子栏目">
             {getFieldDecorator('itemId', {
+              initialValue: itemId,
               // rules: [{ required: true, message: '请选择' }],
             })(
               <Select

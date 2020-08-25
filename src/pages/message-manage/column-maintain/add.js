@@ -101,6 +101,7 @@ class ColumnMaintainAdd extends Component {
               rules: [{ required: true, message: '请输入' }],
             })(
               <Input
+                autoComplete="off"
                 maxLength={30}
                 placeholder="请输入"
               />,
